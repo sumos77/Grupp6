@@ -23,6 +23,7 @@ namespace hakimslivs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             var connString = GetSqlConnectionString("defaultConnection");
             File.WriteAllText("log.txt", connString);
             if (String.IsNullOrEmpty(connString))
@@ -37,7 +38,6 @@ namespace hakimslivs
                                 options.UseSqlServer(connString));
             }
             
-            //Configuration.GetConnectionString(connString))
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

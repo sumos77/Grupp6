@@ -1,17 +1,13 @@
 using hakimslivs.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace hakimslivs
 {
@@ -28,6 +24,7 @@ namespace hakimslivs
         public void ConfigureServices(IServiceCollection services)
         {
             var connString = GetSqlConnectionString("defaultConnection");
+            File.WriteAllText("log.txt", connString);
             if (String.IsNullOrEmpty(connString))
             {
                 services.AddDbContext<ApplicationDbContext>(options =>

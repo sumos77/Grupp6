@@ -27,13 +27,33 @@ namespace hakimslivs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("defaultConnection")));
+
+            var connString = GetSqlConnectionString("defaultConnection");
+            if (String.IsNullOrEmpty(connString))
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                                options.UseSqlServer(connString));
+            }
+            
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+        }
+        /*Original source https://github.com/Azure/Azure-Functions/issues/717#issuecomment-400098791*/
+
+        public static string GetSqlConnectionString(string name)
+        {
+            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
+                conStr = System.Environment.GetEnvironmentVariable($"SQLCONNSTR_{name}", EnvironmentVariableTarget.Process);
+            return conStr;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

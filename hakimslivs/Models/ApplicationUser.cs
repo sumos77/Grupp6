@@ -24,11 +24,31 @@ namespace hakimslivs.Models
         [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
 
+        [Required]
+        [Display(Name = "Street")]
+        [StringLength(50, MinimumLength = 2)]
+        public string Street { get; set; }
+
+        [Required]
+        [Display(Name = "Street number")]
+        [RegularExpression("([0-9]+)")]
+        public int StreetNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Postal Code")]
+        [RegularExpression("(^[0-9]{5})")]
+        public int PostalCode { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        [StringLength(50, MinimumLength = 1)]
+        public string City { get; set; }
+
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
-                       ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date of Birth")]
         public DateTime DOB { get; set; }
+
         public int UsernameChangeLimit { get; set; } = 10;
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace hakimslivs.Areas.Identity.Pages.Account
 {
@@ -47,6 +48,50 @@ namespace hakimslivs.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [StringLength(50, MinimumLength = 2)]
+            [Display(Name = "Alias (Username)")]
+            public string Username { get; set; }
+
+            [Required]
+            [StringLength(50, MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            [StringLength(50, MinimumLength = 2)]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Street")]
+            [StringLength(50, MinimumLength = 2)]
+            public string Street { get; set; }
+
+            [Required]
+            [Display(Name = "Street number")]
+            [RegularExpression("([0-9]+)")]
+            public int StreetNumber { get; set; }
+
+            [Required]
+            [Display(Name = "Postal Code")]
+            [RegularExpression("(^[0-9]{5})")]
+            public int PostalCode { get; set; }
+
+            [Required]
+            [Display(Name = "City")]
+            [StringLength(50, MinimumLength = 1)]
+            public string City { get; set; }
+
+            [DataType(DataType.Date)]
+            [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+            [Display(Name = "Date of Birth")]
+            public DateTime DOB { get; set; }
+
+            [Required]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -75,12 +120,25 @@ namespace hakimslivs.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser {
+                    UserName = Input.Username,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    DOB = Input.DOB,
+                    Street = Input.Street,
+                    StreetNumber = Input.StreetNumber,
+                    PostalCode = Input.PostalCode,
+                    City = Input.City,
+                    PhoneNumber = Input.PhoneNumber,
+                    Email = Input.Email
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    //await _userManager.AddToRoleAsync(user, Roles.Basic.ToString());
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

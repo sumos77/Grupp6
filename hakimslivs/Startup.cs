@@ -94,6 +94,15 @@ namespace hakimslivs
                 options.SlidingExpiration = true;
             });
         }
+        /*Original source https://github.com/Azure/Azure-Functions/issues/717#issuecomment-400098791*/
+
+        public static string GetSqlConnectionString(string name)
+        {
+            string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
+                conStr = System.Environment.GetEnvironmentVariable($"SQLCONNSTR_{name}", EnvironmentVariableTarget.Process);
+            return conStr;
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,4 +1,4 @@
-﻿using hakimslivs.Models;
+using hakimslivs.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,9 @@ namespace hakimslivs.Data
             : base(options)
         {
         }
-
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<ItemQuantity> ItemQuantities { get; set; }
         public DbSet<ManageUserRolesViewModel> ManageUserRolesViewModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

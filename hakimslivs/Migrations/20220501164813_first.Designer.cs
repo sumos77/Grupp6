@@ -10,8 +10,8 @@ using hakimslivs.Data;
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220430113856_appuserfields")]
-    partial class appuserfields
+    [Migration("20220501164813_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -214,7 +214,6 @@ namespace hakimslivs.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int>("PostalCode")
-                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -226,7 +225,6 @@ namespace hakimslivs.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("StreetNumber")
-                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -250,6 +248,94 @@ namespace hakimslivs.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.Item", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(7,2)");
+
+                    b.Property<string>("Product")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.ItemQuantity", b =>
+                {
+                    b.Property<int>("ItemID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ItemID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("ItemQuantities");
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.ManageUserRolesViewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Selected")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ManageUserRolesViewModel");
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.Order", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AspNetUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2(7)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AspNetUserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -301,6 +387,34 @@ namespace hakimslivs.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.ItemQuantity", b =>
+                {
+                    b.HasOne("hakimslivs.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("hakimslivs.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("hakimslivs.Models.Order", b =>
+                {
+                    b.HasOne("hakimslivs.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AspNetUserId");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

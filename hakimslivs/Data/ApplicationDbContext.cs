@@ -12,6 +12,8 @@ namespace hakimslivs.Data
         {
         }
 
+        public DbSet<ManageUserRolesViewModel> ManageUserRolesViewModel { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

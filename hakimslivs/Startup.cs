@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Globalization;
+using System.IO;
 
 namespace hakimslivs
 {
@@ -39,10 +40,20 @@ namespace hakimslivs
                 opt.SupportedCultures = cultures;
                 opt.SupportedUICultures = cultures;
             });
+            var connString = GetSqlConnectionString("defaultConnection");
+            File.WriteAllText("log.txt", connString);
+            if (String.IsNullOrEmpty(connString))
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(connString));
+            }
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -200,7 +200,7 @@ namespace hakimslivs.Migrations
 
             modelBuilder.Entity("hakimslivs.Models.Order", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ID");
                     b.ToTable("UserTokens");
                 });
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hakimslivs.Data;
 
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220501161712_items")]
+    partial class items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,59 +153,6 @@ namespace hakimslivs.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("hakimslivs.Models.Item", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Category")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(7,2)");
-
-                    b.Property<string>("Product")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("hakimslivs.Models.ItemQuantity", b =>
-                {
-                    b.Property<int>("ItemID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasIndex("ItemID");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("ItemQuantities");
-                });
-
-            modelBuilder.Entity("hakimslivs.Models.Order", b =>
-                {
-                    b.Property<int>("ID");
-                    b.ToTable("UserTokens");
-                });
-                
             modelBuilder.Entity("hakimslivs.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")

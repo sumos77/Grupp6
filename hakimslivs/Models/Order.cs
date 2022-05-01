@@ -11,8 +11,8 @@ namespace hakimslivs.Models
         [Column(TypeName = "datetime2(7)")]
         public DateTime OrderDate { get; set; }
 
-        [ForeignKey("AspNetUsersId")]
-        public IdentityUser User { get; set; }
+        [ForeignKey("AspNetUserId")]
+        public ApplicationUser User { get; set; }
 
     }
 }

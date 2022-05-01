@@ -6,12 +6,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace hakimslivs
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -24,6 +25,10 @@ namespace hakimslivs
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.EnsureCreated();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await ContextSeed.SeedRolesAsync(userManager, roleManager);
+                    await ContextSeed.SeedSuperAdminAsync(userManager, roleManager);
+
                 }
                 catch (Exception ex)
                 {

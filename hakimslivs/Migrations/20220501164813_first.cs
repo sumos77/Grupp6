@@ -3,12 +3,46 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace hakimslivs.Migrations
 {
-    public partial class initialize : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "Identity");
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                schema: "Identity",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Category = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Product = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ManageUserRolesViewModel",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Selected = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManageUserRolesViewModel", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Role",
@@ -33,6 +67,10 @@ namespace hakimslivs.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    StreetNumber = table.Column<int>(type: "int", nullable: false),
+                    PostalCode = table.Column<int>(type: "int", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UsernameChangeLimit = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -76,6 +114,28 @@ namespace hakimslivs.Migrations
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                schema: "Identity",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
+                    AspNetUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Orders_User_AspNetUserId",
+                        column: x => x.AspNetUserId,
+                        principalSchema: "Identity",
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,6 +232,51 @@ namespace hakimslivs.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ItemQuantities",
+                schema: "Identity",
+                columns: table => new
+                {
+                    ItemID = table.Column<int>(type: "int", nullable: false),
+                    OrderID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_ItemQuantities_Items_ItemID",
+                        column: x => x.ItemID,
+                        principalSchema: "Identity",
+                        principalTable: "Items",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItemQuantities_Orders_OrderID",
+                        column: x => x.OrderID,
+                        principalSchema: "Identity",
+                        principalTable: "Orders",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemQuantities_ItemID",
+                schema: "Identity",
+                table: "ItemQuantities",
+                column: "ItemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemQuantities_OrderID",
+                schema: "Identity",
+                table: "ItemQuantities",
+                column: "OrderID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_AspNetUserId",
+                schema: "Identity",
+                table: "Orders",
+                column: "AspNetUserId");
+
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 schema: "Identity",
@@ -222,6 +327,14 @@ namespace hakimslivs.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ItemQuantities",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "ManageUserRolesViewModel",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "Identity");
 
@@ -239,6 +352,14 @@ namespace hakimslivs.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Items",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "Orders",
                 schema: "Identity");
 
             migrationBuilder.DropTable(

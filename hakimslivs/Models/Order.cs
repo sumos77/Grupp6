@@ -13,6 +13,5 @@ namespace hakimslivs.Models
 
         [ForeignKey("AspNetUserId")]
         public ApplicationUser User { get; set; }
-
     }
 }

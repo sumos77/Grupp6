@@ -10,8 +10,8 @@ using hakimslivs.Data;
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220502080408_test")]
-    partial class test
+    [Migration("20220503080640_AddedImageURL")]
+    partial class AddedImageURL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -264,6 +264,9 @@ namespace hakimslivs.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(7,2)");
 
@@ -330,9 +333,6 @@ namespace hakimslivs.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2(7)");
-
-                    b.Property<int>("banana")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 

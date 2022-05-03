@@ -10,8 +10,8 @@ using hakimslivs.Data;
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220502080509_test2")]
-    partial class test2
+    [Migration("20220502075132_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -330,6 +330,9 @@ namespace hakimslivs.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2(7)");
+
+                    b.Property<int>("banana")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 

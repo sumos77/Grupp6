@@ -2,25 +2,24 @@
 
 namespace hakimslivs.Migrations
 {
-    public partial class test : Migration
+    public partial class AddedImageURL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "banana",
+            migrationBuilder.AddColumn<string>(
+                name: "ImageURL",
                 schema: "Identity",
-                table: "Orders",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+                table: "Items",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "banana",
+                name: "ImageURL",
                 schema: "Identity",
-                table: "Orders");
+                table: "Items");
         }
     }
 }

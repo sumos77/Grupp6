@@ -9,6 +9,24 @@
 </head>
 <body>
     <header>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <div>Admin Panel</div>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link" asp-area="" asp-page="/Admin/RoleManager/Index">Role Manager</a>
+                                    <a class="nav-link" asp-area="" asp-page="/Admin/UserRoles/Index">User Roles</a>
+                                }
+                            }
+                    </div>
+                </div>
+            </nav>
+        }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">hakimslivs</a>
@@ -17,23 +35,42 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+                            {
+                            }
+                            else if (User.IsInRole("Basic"))
+                            {
+                                <a class="nav-link" asp-area="" asp-page="">Basic Role</a>
+                            }
+                        }
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">   
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Skafferi</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Träning &amp; vikt</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Snacks &amp; godis</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Drycker</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Bröd, kex &amp; kakor</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Hygien &amp; apotek</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Barn &amp; baby</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Hem &amp; städ</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="">Husdjur</a>
+                        </ul>
+            <div class="d-flex align-content-center">
+                <main role="main" class="pb-6">
+                    @RenderBody()
+                </main>
+            </div>
+    </div>
+
     </div>
 
     <footer class="border-top footer text-muted">

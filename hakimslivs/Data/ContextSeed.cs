@@ -46,5 +46,85 @@ namespace hakimslivs.Data
 
             }
         }
+
+        public static async Task InitializeProductAsync(ApplicationDbContext database)
+        {
+            if (database.Items.Any())
+            {
+                return;
+            }
+
+            database.Items.Add(new Item
+            {
+                Category = "Frukt",
+                Product = "Banan",
+                Price = 5.5M,
+                Stock = 100,
+                Description = "En lång gul böjd frukt.",
+                ImageURL = "pictures/banana.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Frukt",
+                Product = "Päron",
+                Price = 6,
+                Stock = 200,
+                Description = "En grön frukt.",
+                ImageURL = "pictures/pear.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Frukt",
+                Product = "Apelsin",
+                Price = 5.5M,
+                Stock = 150,
+                Description = "En lång gul böjd frukt.",
+                ImageURL = "pictures/orange.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Frukt",
+                Product = "Äpple",
+                Price = 4,
+                Stock = 300,
+                Description = "Finns i flera färger.",
+                ImageURL = "pictures/apple.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Dryck",
+                Product = "Coca Cola",
+                Price = 11,
+                Stock = 55,
+                Description = "Originalet.",
+                ImageURL = "pictures/cocacola.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Dryck",
+                Product = "Red Bull",
+                Price = 17,
+                Stock = 75,
+                Description = "Ger dig vingar.",
+                ImageURL = "pictures/redbull.jpg"
+            });
+
+            database.Items.Add(new Item
+            {
+                Category = "Dryck",
+                Product = "Mountain Dew",
+                Price = 11,
+                Stock = 22,
+                Description = "Sött vatten.",
+                ImageURL = "pictures/mountaindew.jpg"
+            });
+
+            database.SaveChanges();
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace hakimslivs.Models
@@ -12,7 +14,7 @@ namespace hakimslivs.Models
         public DateTime OrderDate { get; set; }
 
         [ForeignKey("AspNetUserId")]
+        [Display(Name = "CustomerID")]
         public ApplicationUser User { get; set; }
-
     }
 }

@@ -57,6 +57,17 @@ namespace hakimslivs.Data
             {
                 return Task.CompletedTask;
             }
+            
+            Item test = new Item
+            {
+                Product = "Test",
+                Price = 2,
+                Stock = 0,
+                ImageURL = $"https://images.unsplash.com/photo-1592194996308-7b43878e84a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+            };
+            database.Items.Add(test);
+            database.SaveChanges();
+            
             string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
 
             foreach (string line in itemLines)

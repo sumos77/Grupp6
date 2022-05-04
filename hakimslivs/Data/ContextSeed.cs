@@ -1,6 +1,10 @@
 ﻿using hakimslivs.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace hakimslivs.Data
@@ -45,6 +49,50 @@ namespace hakimslivs.Data
                 }
 
             }
+        }
+        public static async Task InitializeProductAsync(ApplicationDbContext database)
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            if (database.Items.Any())
+            {
+                return;
+            }
+            string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
+
+            foreach (string line in itemLines)
+            {
+                string[] parts = line.Split(';');
+
+                Category? category;
+                try
+                {
+                    category = (Category)Enum.Parse(typeof(Category), parts[0]);
+                }
+                catch
+                {
+                    category = null;
+                }
+
+                string product = parts[1];
+                decimal price = decimal.Parse(parts[2]);
+                int stock = int.Parse(parts[3]);
+                string description = parts[4];
+                string imageURL = parts[5];
+
+                Item i = new Item
+                {
+                    Category = category,
+                    Product = product,
+                    Price = price,
+                    Stock = stock,
+                    Description = description,
+                    ImageURL = imageURL
+                };
+
+                database.Items.Add(i);
+            }
+
+            database.SaveChanges();
         }
     }
 }

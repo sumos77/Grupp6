@@ -60,7 +60,6 @@ namespace hakimslivs.Data
                 return Task.CompletedTask;
             }
 
-
             string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
             foreach (string line in itemLines)
             {

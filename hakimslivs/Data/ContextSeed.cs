@@ -69,7 +69,8 @@ namespace hakimslivs.Data
             database.SaveChanges();
             
             string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
-
+            File.WriteAllText("bug.txt", itemLines.Length.ToString());
+            
             foreach (string line in itemLines)
             {
                 string[] parts = line.Split(';');

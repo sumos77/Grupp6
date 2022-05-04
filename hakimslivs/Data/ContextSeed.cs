@@ -50,12 +50,12 @@ namespace hakimslivs.Data
 
             }
         }
-        public static async Task InitializeProductAsync(ApplicationDbContext database)
+        public static Task InitializeProductAsync(ApplicationDbContext database)
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             if (database.Items.Any())
             {
-                return;
+                return Task.CompletedTask;
             }
             string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
 
@@ -93,6 +93,7 @@ namespace hakimslivs.Data
             }
 
             database.SaveChanges();
+            return Task.CompletedTask;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace hakimslivs.Data
 {
@@ -97,6 +98,47 @@ namespace hakimslivs.Data
             database.SaveChanges();
             return Task.CompletedTask;
         }
+        public static async Task InitializeUserAsync(ApplicationDbContext database, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            if (database.Users.Any())
+            {
+                return;
+            }
+            string[] userLines = File.ReadAllLines("Data/User.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
 
+            foreach (string line in userLines)
+            {
+                string[] parts = line.Split(';');
+
+                string password = parts[9];
+                string role = parts[10];
+
+                ApplicationUser user = new ApplicationUser
+                {
+                    UserName = parts[0],
+                    FirstName = parts[1],
+                    LastName = parts[2],
+                    DOB = DateTime.Parse(parts[3]),
+                    Street = parts[4],
+                    StreetNumber = int.Parse(parts[5]),
+                    PostalCode = int.Parse(parts[6]),
+                    City = parts[7],
+                    Email = parts[8],
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true
+                };
+
+                await userManager.CreateAsync(user, password);
+                if (role == "Admin")
+                {
+                    await userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+                }
+                else
+                {
+                    await userManager.AddToRoleAsync(user, Roles.Basic.ToString());
+                }
+            }
+        }
     }
 }

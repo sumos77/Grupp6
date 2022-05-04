@@ -68,8 +68,7 @@ namespace hakimslivs.Data
             database.Items.Add(test);
             database.SaveChanges();
             
-            string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
-            File.WriteAllText("bug.txt", itemLines.Length.ToString());
+            string[] itemLines = File.ReadAllLines("~/Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
             
             foreach (string line in itemLines)
             {

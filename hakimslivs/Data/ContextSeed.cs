@@ -11,7 +11,7 @@ namespace hakimslivs.Data
 {
     public class ContextSeed
     {
-        public static async Task SeedRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
@@ -36,6 +36,7 @@ namespace hakimslivs.Data
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
+
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
@@ -50,15 +51,16 @@ namespace hakimslivs.Data
 
             }
         }
-        public static async Task InitializeProductAsync(ApplicationDbContext database)
+        public static Task InitializeProductAsync(ApplicationDbContext database)
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             if (database.Items.Any())
             {
-                return;
+                return Task.CompletedTask;
             }
-            string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
 
+
+            string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
             foreach (string line in itemLines)
             {
                 string[] parts = line.Split(';');
@@ -93,6 +95,8 @@ namespace hakimslivs.Data
             }
 
             database.SaveChanges();
+            return Task.CompletedTask;
         }
+
     }
 }

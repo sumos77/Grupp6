@@ -7,8 +7,8 @@ namespace hakimslivs.Models
     {
         public int ID { get; set; }
 
-        [MaxLength(50)]
-        public string Category { get; set; }
+
+        public Category? Category { get; set; }
 
         [MaxLength(50)]
         public string Product { get; set; }
@@ -19,5 +19,14 @@ namespace hakimslivs.Models
         public string Description { get; set; }
         public string ImageURL { get; set; }
 
+    }
+
+    public enum Category
+    {
+        Frukt,
+        Grönsaker,
+        Dryck,
+        Bröd,
+        Godis
     }
 }

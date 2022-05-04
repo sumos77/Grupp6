@@ -11,7 +11,7 @@ namespace hakimslivs.Data
 {
     public class ContextSeed
     {
-        public static async Task SeedRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
@@ -36,6 +36,7 @@ namespace hakimslivs.Data
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
+
             if (userManager.Users.All(u => u.Id != defaultUser.Id))
             {
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
@@ -57,19 +58,8 @@ namespace hakimslivs.Data
             {
                 return Task.CompletedTask;
             }
-            
-            Item test = new Item
-            {
-                Product = "Test",
-                Price = 2,
-                Stock = 0,
-                ImageURL = $"https://images.unsplash.com/photo-1592194996308-7b43878e84a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-            };
-            database.Items.Add(test);
-            database.SaveChanges();
-            
-            string[] itemLines = File.ReadAllLines("~/Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
-            
+
+            string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
             foreach (string line in itemLines)
             {
                 string[] parts = line.Split(';');
@@ -106,5 +96,6 @@ namespace hakimslivs.Data
             database.SaveChanges();
             return Task.CompletedTask;
         }
+
     }
 }

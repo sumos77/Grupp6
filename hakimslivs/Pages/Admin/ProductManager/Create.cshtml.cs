@@ -7,36 +7,56 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using hakimslivs.Data;
 using hakimslivs.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
     public class CreateModel : PageModel
     {
-        private readonly hakimslivs.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _database;
 
-        public CreateModel(hakimslivs.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext database)
         {
-            _context = context;
+            _database = database;
         }
+        public List<SelectListItem> Categories { get; set; }
 
-        public IActionResult OnGet()
+        public async Task LoadCategories()
         {
+            Categories = await _database.Items.Select(p => new SelectListItem
+            {
+                Value = p.Category.ToString(),
+                Text = p.Category.ToString()
+            }).Distinct()
+                .ToListAsync();
+
+            SelectListItem none = new SelectListItem
+            {
+                Value = "Ingen",
+                Text = "Ingen"
+            };
+            Categories.Insert(0, none);
+        }
+        public async Task<IActionResult> OnGet()
+        {
+            await LoadCategories();
             return Page();
         }
 
         [BindProperty]
         public Item Item { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+
         public async Task<IActionResult> OnPostAsync()
         {
+            await LoadCategories();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Items.Add(Item);
-            await _context.SaveChangesAsync();
+            _database.Items.Add(Item);
+            await _database.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

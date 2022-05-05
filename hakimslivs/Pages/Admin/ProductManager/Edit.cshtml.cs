@@ -13,24 +13,44 @@ namespace hakimslivs.Pages.Admin.ProductManager
 {
     public class EditModel : PageModel
     {
-        private readonly hakimslivs.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _database;
 
-        public EditModel(hakimslivs.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext database)
         {
-            _context = context;
+            _database = database;
         }
 
         [BindProperty]
         public Item Item { get; set; }
 
+        public List<SelectListItem> Categories { get; set; }
+
+        public async Task LoadCategories()
+        {
+            Categories = await _database.Items.Select(p => new SelectListItem
+            {
+                Value = p.Category.ToString(),
+                Text = p.Category.ToString()
+            }).Distinct()
+                .ToListAsync();
+
+            SelectListItem none = new SelectListItem
+            {
+                Value = "Ingen",
+                Text = "Ingen"
+            };
+            Categories.Insert(0, none);
+        }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            await LoadCategories();
             if (id == null)
             {
                 return NotFound();
             }
 
-            Item = await _context.Items.FirstOrDefaultAsync(m => m.ID == id);
+            Item = await _database.Items.FirstOrDefaultAsync(m => m.ID == id);
 
             if (Item == null)
             {
@@ -39,20 +59,19 @@ namespace hakimslivs.Pages.Admin.ProductManager
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            await LoadCategories();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Item).State = EntityState.Modified;
+            _database.Attach(Item).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _database.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,7 +90,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         private bool ItemExists(int id)
         {
-            return _context.Items.Any(e => e.ID == id);
+            return _database.Items.Any(e => e.ID == id);
         }
     }
 }

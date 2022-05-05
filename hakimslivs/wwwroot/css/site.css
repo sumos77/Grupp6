@@ -61,6 +61,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+    background-color:whitesmoke;
 }
 .footer {
   position: absolute;
@@ -86,4 +87,12 @@ body {
 }
 .box {
     height: 120px;
+}
+.product-manager-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 16px 16px;
+}
+.product-manager {
+    padding-bottom: 12px;
 }

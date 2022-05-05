@@ -4,7 +4,10 @@
 @{
     ViewData["Title"] = "Välkommen till Hakims Livs!";
 }
-
+<div class="container">
+<div class="row">
+<partial name="_SideBarPartial" />
+<div class="justify-content-center col-10">
 <h1 class="title">@ViewData["Title"]</h1>
 <div class="product-container">
     @foreach (var item in Model.Item)
@@ -59,4 +62,7 @@
         </div>
     }
 
+</div>
+</div>
+</div>
 </div>

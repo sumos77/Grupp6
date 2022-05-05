@@ -10,8 +10,8 @@ using hakimslivs.Data;
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220502080509_test2")]
-    partial class test2
+    [Migration("20220504084203_CategoryAsEnum")]
+    partial class CategoryAsEnum
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -258,10 +258,12 @@ namespace hakimslivs.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Category")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")

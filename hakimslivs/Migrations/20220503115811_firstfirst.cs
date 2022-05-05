@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace hakimslivs.Migrations
 {
-    public partial class first : Migration
+    public partial class firstfirst : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,8 @@ namespace hakimslivs.Migrations
                     Product = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(7,2)", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

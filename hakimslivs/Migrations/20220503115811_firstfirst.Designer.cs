@@ -10,8 +10,8 @@ using hakimslivs.Data;
 namespace hakimslivs.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220501164813_first")]
-    partial class first
+    [Migration("20220503115811_firstfirst")]
+    partial class firstfirst
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -262,6 +262,9 @@ namespace hakimslivs.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")

@@ -118,10 +118,11 @@ namespace hakimslivs
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMigrationsEndPoint();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
+                //app.UseMigrationsEndPoint();
             }
             else
             {

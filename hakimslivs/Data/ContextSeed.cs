@@ -59,31 +59,32 @@ namespace hakimslivs.Data
             {
                 return Task.CompletedTask;
             }
+            
+            string[] categoryLines = File.ReadAllLines("Data/Category.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
+            foreach (var category in categoryLines)
+            {
+                Category c = new Category
+                {
+                    Name = category
+                };
+                database.Categories.Add(c);
+            }
+
+            database.SaveChanges();
 
             string[] itemLines = File.ReadAllLines("Data/Item.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
             foreach (string line in itemLines)
             {
                 string[] parts = line.Split(';');
 
-                //try
-                //{
-                //    category = (Category)Enum.Parse(typeof(Category), parts[0]);
-                //}
-                //catch
-                //{
-                //    category = null;
-                //}
-
-                Category category = new Category();
+                Category category = new();
                 try 
                 {
                     category = database.Categories.First(c => c.Name == parts[0]);
                 }
                 catch
                 {
-                    category.Name = parts[0];
-                    database.Add(category);
-                    database.SaveChanges();
+                    category = null;
                 }
 
                 string product = parts[1];
@@ -94,7 +95,7 @@ namespace hakimslivs.Data
 
                 Item i = new Item
                 {
-                    CategoryName = category.Name,
+                    Category = category,
                     Product = product,
                     Price = price,
                     Stock = stock,

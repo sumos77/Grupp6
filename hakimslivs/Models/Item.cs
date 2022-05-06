@@ -7,8 +7,8 @@ namespace hakimslivs.Models
     {
         public int ID { get; set; }
         [Column("Category")]
-        public Category? Category { get; set; }
-        public string CategoryName { get; set; }
+        public Category Category { get; set; }
+        //public string CategoryName { get; set; }
 
         [MaxLength(50)]
         public string Product { get; set; }

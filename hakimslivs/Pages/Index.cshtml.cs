@@ -23,7 +23,7 @@ namespace hakimslivs.Pages
 
         public async Task OnGetAsync()
         {
-            Item = await _context.Items.ToListAsync();
+            Item = await _context.Items.Include(i => i.Category).ToListAsync();
         }
     }
 }

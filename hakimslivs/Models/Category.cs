@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace hakimslivs.Models
@@ -7,5 +7,6 @@ namespace hakimslivs.Models
     {
         [Key]
         public string Name { get; set; }
+        public ICollection<Item> Items { get; set; }
     }
 }

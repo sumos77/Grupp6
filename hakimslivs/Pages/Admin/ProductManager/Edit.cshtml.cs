@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,10 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         [BindProperty]
         public Item Item { get; set; }
+        [BindProperty]
+        public int Kronor { get; set; }
+        [BindProperty]
+        public int Öre { get; set; }
 
         public List<SelectListItem> Categories { get; set; }
 
@@ -51,6 +56,9 @@ namespace hakimslivs.Pages.Admin.ProductManager
             }
 
             Item = await _database.Items.FirstOrDefaultAsync(m => m.ID == id);
+            var price = Item.Price.ToString().Split(",");
+            Kronor = int.Parse(price[0]);
+            Öre = int.Parse(price[1]);
 
             if (Item == null)
             {
@@ -61,7 +69,18 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task<IActionResult> OnPostAsync()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
+            string price = Kronor + "." + Öre;
+            try
+            {
+                Item.Price = decimal.Parse(price);
+            }
+            catch
+            {
+                return Page();
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

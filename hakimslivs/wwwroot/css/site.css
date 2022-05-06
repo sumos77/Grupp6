@@ -96,3 +96,9 @@ body {
 .product-manager {
     padding-bottom: 12px;
 }
+.form-price {
+    display: inline-flex;
+}
+.form-price .form-group:first-child {
+    padding-right: 4px;
+}

@@ -1,13 +1,15 @@
 ﻿@page
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model hakimslivs.Pages.Admin.ProductManager.CreateModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Skapa ny produkt";
+    CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Item</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,8 +17,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Item.Category" class="control-label"></label>
-                <select asp-for="Item.Category" asp-items="Model.Categories"></select>
-                @*<input asp-for="Item.Category" class="form-control" />*@
+                @*<select asp-for="Item.Category" asp-items="Model.Categories"></select>*@
+                <input asp-for="Item.Category" class="form-control" />
                 <span asp-validation-for="Item.Category" class="text-danger"></span>
 
             </div>
@@ -25,11 +27,19 @@
                 <input asp-for="Item.Product" class="form-control" />
                 <span asp-validation-for="Item.Product" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Item.Price" class="control-label"></label>
-                <input asp-for="Item.Price" class="form-control" />
-                <span asp-validation-for="Item.Price" class="text-danger"></span>
+            <div class="form-price">
+                <div class="form-group">
+                    <label asp-for="Kronor" class="control-label"></label>
+                    <input asp-for="Kronor" id="Kronor" class="form-control" value="" />
+                    <span asp-validation-for="@Model.Kronor" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Öre" class="control-label"></label>
+                    <input asp-for="Öre" id="Öre" class="form-control" value="" />
+                    <span asp-validation-for="@Model.Öre" class="text-danger"></span>
+                </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="Item.Stock" class="control-label"></label>
                 <input asp-for="Item.Stock" class="form-control" />
@@ -46,16 +56,18 @@
                 <span asp-validation-for="Item.ImageURL" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Skapa" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">Tillbaka till produktlistan</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

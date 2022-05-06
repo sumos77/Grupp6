@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,12 @@ namespace hakimslivs.Pages.Admin.ProductManager
             _database = database;
         }
         public List<SelectListItem> Categories { get; set; }
+        [BindProperty]
+        public int Kronor { get; set; }
+        [BindProperty]
+        public int Öre { get; set; }
+        [BindProperty]
+        public Item Item { get; set; }
 
         public async Task LoadCategories()
         {
@@ -39,21 +46,31 @@ namespace hakimslivs.Pages.Admin.ProductManager
         }
         public async Task<IActionResult> OnGet()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
             return Page();
-        }
-
-        [BindProperty]
-        public Item Item { get; set; }
-
+        } 
 
         public async Task<IActionResult> OnPostAsync()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+            Item.Price = 0;
             await LoadCategories();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
+
+            string price = Kronor + "." + Öre;
+            try
+            {
+                Item.Price = decimal.Parse(price);
+            }
+            catch
+            {
+                return Page();
+            }
+            
 
             _database.Items.Add(Item);
             await _database.SaveChangesAsync();

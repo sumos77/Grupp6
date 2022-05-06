@@ -17,13 +17,13 @@
             <div class="card-body">
                 <h4 class="card-title">@item.Product</h4>
                 <div class="box">
-                    @if (String.IsNullOrEmpty(item.Category.ToString()))
+                    @if (String.IsNullOrEmpty(item.CategoryName))
                     {
                         <p class="card-text na">Ingen kategori tillgänglig</p>
                     }
                     else
                     {
-                        <a href="#" class="card-text">@item.Category.ToString()</a>
+                        <a href="#" class="card-text">@item.CategoryName.ToString()</a>
                     }
                     @if (String.IsNullOrEmpty(item.Description))
                     {

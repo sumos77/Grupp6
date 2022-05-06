@@ -65,14 +65,25 @@ namespace hakimslivs.Data
             {
                 string[] parts = line.Split(';');
 
-                Category? category;
-                try
+                //try
+                //{
+                //    category = (Category)Enum.Parse(typeof(Category), parts[0]);
+                //}
+                //catch
+                //{
+                //    category = null;
+                //}
+
+                Category category = new Category();
+                try 
                 {
-                    category = (Category)Enum.Parse(typeof(Category), parts[0]);
+                    category = database.Categories.First(c => c.Name == parts[0]);
                 }
                 catch
                 {
-                    category = null;
+                    category.Name = parts[0];
+                    database.Add(category);
+                    database.SaveChanges();
                 }
 
                 string product = parts[1];
@@ -83,7 +94,7 @@ namespace hakimslivs.Data
 
                 Item i = new Item
                 {
-                    Category = category,
+                    CategoryName = category.Name,
                     Product = product,
                     Price = price,
                     Stock = stock,

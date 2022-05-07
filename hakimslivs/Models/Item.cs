@@ -6,9 +6,8 @@ namespace hakimslivs.Models
     public class Item
     {
         public int ID { get; set; }
-        [Display(Name = "Kategori")]
-        public Category? Category { get; set; }
-
+        [Display(Name = "Kategori"), Column("Category")]
+        public Category Category { get; set; }
         [MaxLength(50), Display(Name = "Produkt"), Required]
         public string Product { get; set; }
         [Column(TypeName = "decimal(7, 2)"), Display(Name = "Pris")]
@@ -22,12 +21,6 @@ namespace hakimslivs.Models
 
     }
 
-    public enum Category
-    {
-        Frukt,
-        Grönsaker,
-        Dryck,
-        Bröd,
-        Godis
-    }
+
+
 }

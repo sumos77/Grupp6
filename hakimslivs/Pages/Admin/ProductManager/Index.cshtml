@@ -50,13 +50,13 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        @if (String.IsNullOrEmpty(item.Category.ToString()))
+                                        @if (item.Category == null)
                                         {
                                             <p class="na">Ingen</p>
                                         }
                                         else
                                         {
-                                            <a href="#">@item.Category.ToString()</a>
+                                            <a href="#">@item.Category.Name</a>
                                         }
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.Price)kr</td>

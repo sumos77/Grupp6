@@ -55,7 +55,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
                 return NotFound();
             }
 
-            Item = await _database.Items.FirstOrDefaultAsync(m => m.ID == id);
+            Item = await _database.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.ID == id);
             var price = Item.Price.ToString().Split(",");
             Kronor = int.Parse(price[0]);
             Öre = int.Parse(price[1]);

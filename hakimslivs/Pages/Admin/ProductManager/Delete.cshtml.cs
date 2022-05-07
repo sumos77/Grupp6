@@ -29,7 +29,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
                 return NotFound();
             }
 
-            Item = await _context.Items.FirstOrDefaultAsync(m => m.ID == id);
+            Item = await _context.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.ID == id);
 
             if (Item == null)
             {

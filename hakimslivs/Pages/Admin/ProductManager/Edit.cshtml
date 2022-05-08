@@ -14,9 +14,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Item.ID" />
             <div class="form-group">
-                <label asp-for="Item.Category" class="control-label"></label>
-                @*<select asp-for="Item.Category" asp-items="Model.Categories"></select>*@
-                <input asp-for="Item.Category.Name" class="form-control" />
+                <label asp-for="Item.Category.Name" class="control-label"></label>
+                <select asp-for="Item.Category.Name" asp-items="Model.Categories"></select>
                 <span asp-validation-for="Item.Category" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -63,5 +62,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

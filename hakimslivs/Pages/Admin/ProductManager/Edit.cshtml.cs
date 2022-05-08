@@ -21,7 +21,6 @@ namespace hakimslivs.Pages.Admin.ProductManager
             _database = database;
         }
 
-        [BindProperty]
         public Item Item { get; set; }
         [BindProperty]
         public int Kronor { get; set; }
@@ -32,10 +31,10 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task LoadCategories()
         {
-            Categories = await _database.Items.Select(p => new SelectListItem
+            Categories = await _database.Categories.Select(p => new SelectListItem
             {
-                Value = p.Category.ToString(),
-                Text = p.Category.ToString()
+                Value = p.Name,
+                Text = p.Name
             }).Distinct()
                 .ToListAsync();
 
@@ -47,15 +46,16 @@ namespace hakimslivs.Pages.Admin.ProductManager
             Categories.Insert(0, none);
         }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task LoadItem(int id)
+        {
+            Item = await _database.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.ID == id);
+        }
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             await LoadCategories();
-            if (id == null)
-            {
-                return NotFound();
-            }
+            await LoadItem(id);
 
-            Item = await _database.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.ID == id);
+            
             var price = Item.Price.ToString().Split(",");
             Kronor = int.Parse(price[0]);
             Öre = int.Parse(price[1]);
@@ -67,11 +67,23 @@ namespace hakimslivs.Pages.Admin.ProductManager
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int id, Item item)
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
+            await LoadItem(id);
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             string price = Kronor + "." + Öre;
+
+            Item.Product = item.Product;
+            Item.Description = item.Description;
+            Item.Stock = item.Stock;
+            Item.ImageURL = item.ImageURL;
             try
             {
                 Item.Price = decimal.Parse(price);
@@ -81,12 +93,20 @@ namespace hakimslivs.Pages.Admin.ProductManager
                 return Page();
             }
 
+            try
+            {
+                Item.Category = await _database.Categories.FirstAsync(c => c.Name == item.Category.Name);
+            }
+            catch
+            {
+                Item.Category = null;
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _database.Attach(Item).State = EntityState.Modified;
 
             try
             {

@@ -30,10 +30,10 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task LoadCategories()
         {
-            Categories = await _database.Items.Select(p => new SelectListItem
+            Categories = await _database.Categories.Select(p => new SelectListItem
             {
-                Value = p.Category.ToString(),
-                Text = p.Category.ToString()
+                Value = p.Name,
+                Text = p.Name
             }).Distinct()
                 .ToListAsync();
 
@@ -51,16 +51,26 @@ namespace hakimslivs.Pages.Admin.ProductManager
             return Page();
         } 
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Item item)
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-            Item.Price = 0;
             await LoadCategories();
+            Item.Price = 0;
+            
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            try
+            {
+                Item.Category = await _database.Categories.FirstAsync(c => c.Name == item.Category.Name);
+            }
+            catch
+            {
+                Item.Category = null;
+            }
+            
             string price = Kronor + "." + Öre;
             try
             {
@@ -71,7 +81,6 @@ namespace hakimslivs.Pages.Admin.ProductManager
                 return Page();
             }
             
-
             _database.Items.Add(Item);
             await _database.SaveChangesAsync();
 

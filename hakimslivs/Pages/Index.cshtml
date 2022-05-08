@@ -10,7 +10,7 @@
 <div class="justify-content-center col-10">
 <h1 class="title">@ViewData["Title"]</h1>
 <div class="product-container">
-    @foreach (var item in Model.Item)
+    @foreach (var item in Model.Items)
     {
         <div class="card">
             <img class="card-img" src="@item.ImageURL" alt="Product image">

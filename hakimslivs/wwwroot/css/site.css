@@ -102,3 +102,7 @@ body {
 .form-price .form-group:first-child {
     padding-right: 4px;
 }
+
+.fa {
+    padding: 5px 5px;
+}

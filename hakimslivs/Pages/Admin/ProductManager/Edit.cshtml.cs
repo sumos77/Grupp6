@@ -68,8 +68,19 @@ namespace hakimslivs.Pages.Admin.ProductManager
             }
 
             var price = Item.Price.ToString().Split(",");
-            Kronor = int.Parse(price[0]);
-            Öre = int.Parse(price[1]);
+            int result;
+            if (int.TryParse(price[0], out result))
+            {
+                Kronor = int.Parse(price[0]);
+                Öre = int.Parse(price[1]);
+            }
+            else
+            {
+                price = Item.Price.ToString().Split(".");
+                Kronor = int.Parse(price[0]);
+                Öre = int.Parse(price[1]);
+            }
+            
 
             if (Item == null)
             {

@@ -107,3 +107,20 @@ body {
     min-width: 20px;
     padding: 5px 5px;
 }
+.product-manager-categories {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 24px;
+    margin-right: 24px;
+    text-align: center;
+}
+
+@media screen and (max-width: 540px) {
+    .category-name {
+        display: none;
+    }
+    .product-manager-categories {
+        font-size: 18px;
+    }
+}

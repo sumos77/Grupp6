@@ -1,4 +1,5 @@
-﻿using hakimslivs.Data;
+﻿using System;
+using hakimslivs.Data;
 using hakimslivs.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
@@ -21,11 +23,21 @@ namespace hakimslivs.Pages.Admin.ProductManager
         }
         public List<IdentityRole> Roles { get; set; }
         public IList<Item> Item { get;set; }
+        public IList<Category> Categories { get; set; }
+        public string CurrentCategory { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string currentCategory)
         {
             Roles = await _roleManager.Roles.ToListAsync();
-            Item = await _context.Items.Include(i => i.Category).ToListAsync();
+            Categories = await _context.Categories.ToListAsync();
+            if (!String.IsNullOrEmpty(currentCategory))
+            {
+                Item = await _context.Items.Include(i => i.Category).Where(i => i.Category.Name == currentCategory).ToListAsync();
+            }
+            else
+            {
+                Item = await _context.Items.Include(i => i.Category).ToListAsync();
+            }
         }
     }
 }

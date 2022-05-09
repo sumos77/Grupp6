@@ -9,18 +9,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using hakimslivs.Data;
 using hakimslivs.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _database;
-
-        public EditModel(ApplicationDbContext database)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public EditModel(ApplicationDbContext database, RoleManager<IdentityRole> roleManager)
         {
             _database = database;
+            _roleManager = roleManager;
         }
-
+        public List<IdentityRole> Roles { get; set; }
         public Item Item { get; set; }
         [BindProperty]
         public int Kronor { get; set; }
@@ -52,10 +56,17 @@ namespace hakimslivs.Pages.Admin.ProductManager
         }
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             await LoadCategories();
-            await LoadItem(id);
+            try
+            {
+                await LoadItem(id);
+            }
+            catch
+            {
+                return NotFound();
+            }
 
-            
             var price = Item.Price.ToString().Split(",");
             Kronor = int.Parse(price[0]);
             Öre = int.Parse(price[1]);
@@ -69,6 +80,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task<IActionResult> OnPostAsync(int id, Item item)
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
             await LoadItem(id);

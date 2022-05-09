@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using hakimslivs.Data;
 using hakimslivs.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class DeleteModel : PageModel
     {
-        private readonly hakimslivs.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public DeleteModel(hakimslivs.Data.ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _roleManager = roleManager;
         }
+        public List<IdentityRole> Roles { get; set; }
 
         [BindProperty]
         public Item Item { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             if (id == null)
             {
                 return NotFound();
@@ -40,6 +47,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             if (id == null)
             {
                 return NotFound();

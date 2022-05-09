@@ -13,6 +13,15 @@
                 <a asp-page="Create" class="btn btn-primary">Skapa ny produkt</a>
             </p>
 
+            <div class="product-manager-categories">
+                <a asp-page="/Admin/ProductManager/Index"><i class="fa fa-solid fa-cubes-stacked"></i><span class="category-name">Alla</span></a>
+                @foreach (var category in Model.Categories)
+                {
+                    <a asp-page="/Admin/ProductManager/Index" asp-route-currentCategory="@category.Name"><i class="fa @category.Icon"></i><span class="category-name">@category.Name</span></a>
+                }
+            </div>
+
+
             <div class="product-manager-container">
 
                 @foreach (var item in Model.Item)
@@ -53,7 +62,7 @@
                                         }
                                         else
                                         {
-                                            <a href="#">@item.Category.Name</a>
+                                            <a href="#"><i class="fa @item.Category.Icon"></i>@item.Category.Name</a>
                                         }
                                     </td>
                                     <td>@Html.DisplayFor(modelItem => item.Price)kr</td>

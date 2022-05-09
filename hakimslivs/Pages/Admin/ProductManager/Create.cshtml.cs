@@ -8,18 +8,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using hakimslivs.Data;
 using hakimslivs.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class CreateModel : PageModel
     {
         private readonly ApplicationDbContext _database;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CreateModel(ApplicationDbContext database)
+        public CreateModel(ApplicationDbContext database, RoleManager<IdentityRole> roleManager)
         {
             _database = database;
+            _roleManager = roleManager;
         }
+        public List<IdentityRole> Roles { get; set; }
         public List<SelectListItem> Categories { get; set; }
         [BindProperty]
         public int Kronor { get; set; }
@@ -46,6 +52,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
         }
         public async Task<IActionResult> OnGet()
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
             return Page();
@@ -53,6 +60,7 @@ namespace hakimslivs.Pages.Admin.ProductManager
 
         public async Task<IActionResult> OnPostAsync(Item item)
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             await LoadCategories();
             Item.Price = 0;

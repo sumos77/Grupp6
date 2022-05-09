@@ -23,7 +23,7 @@
                             }
                             else
                             {
-                                <a href="#" class="card-text">@item.Category.Name</a>
+                                <a asp-page="./Index" asp-route-currentCategory="@item.Category.Name" class="card-text"> <i class="fa @item.Category.Icon"></i>@item.Category.Name</a>
                             }
                             @if (String.IsNullOrEmpty(item.Description))
                             {

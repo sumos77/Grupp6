@@ -104,5 +104,6 @@ body {
 }
 
 .fa {
+    min-width: 20px;
     padding: 5px 5px;
 }

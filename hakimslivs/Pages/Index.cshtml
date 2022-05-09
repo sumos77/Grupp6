@@ -49,7 +49,7 @@
                                         iconString = "fa-solid fa-dragon";
                                     }
 
-                                    <a href="#" class="card-text">@item.Category.Name <i class="fa @iconString"></i></a>
+                                    <a asp-page="./Index" asp-route-currentCategory="@item.Category.Name" class="card-text">@item.Category.Name <i class="fa @iconString"></i></a>
                                 }
                                 @if (String.IsNullOrEmpty(item.Description))
                                 {

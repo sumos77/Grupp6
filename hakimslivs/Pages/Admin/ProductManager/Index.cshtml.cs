@@ -4,22 +4,27 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace hakimslivs.Pages.Admin.ProductManager
 {
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        public IndexModel(ApplicationDbContext context)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public IndexModel(ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _roleManager = roleManager;
         }
-
+        public List<IdentityRole> Roles { get; set; }
         public IList<Item> Item { get;set; }
 
         public async Task OnGetAsync()
         {
+            Roles = await _roleManager.Roles.ToListAsync();
             Item = await _context.Items.Include(i => i.Category).ToListAsync();
         }
     }

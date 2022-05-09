@@ -65,9 +65,11 @@ namespace hakimslivs.Data
                 string[] categoryLines = File.ReadAllLines("Data/Category.csv", Encoding.GetEncoding("ISO-8859-1")).Skip(1).ToArray();
                 foreach (var category in categoryLines)
                 {
+                    string[] parts = category.Split(';');
                     Category c = new Category
                     {
-                        Name = category
+                        Name = parts[0],
+                        Icon = parts[1]
                     };
                     database.Categories.Add(c);
                 }

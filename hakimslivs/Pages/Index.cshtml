@@ -52,33 +52,7 @@
                                 }
                                 else
                                 {
-                                    string iconString = "";
-                                    @if (item.Category.Name == "Bröd")
-                                    {
-                                        iconString = "fa-solid fa-bread-slice";
-                                    }
-                                    else if (item.Category.Name == "Grönsaker")
-                                    {
-                                        iconString = "fa-solid fa-carrot";
-                                    }
-                                    else if (item.Category.Name == "Frukt")
-                                    {
-                                        iconString = "fa-solid fa-apple-whole";
-                                    }
-                                    else if (item.Category.Name == "Godis")
-                                    {
-                                        iconString = "fa-solid fa-candy-cane";
-                                    }
-                                    else if (item.Category.Name == "Dryck")
-                                    {
-                                        iconString = "fa-solid fa-beer-mug-empty";
-                                    }
-                                    else
-                                    {
-                                        iconString = "fa-solid fa-dragon";
-                                    }
-
-                                    <a href="#" class="card-text">@item.Category.Name <i class="fa @iconString"></i></a>
+                                    <a asp-page="./Index" asp-route-currentCategory="@item.Category.Name" class="card-text">@item.Category.Name </a>
                                 }
                                 @if (String.IsNullOrEmpty(item.Description))
                                 {

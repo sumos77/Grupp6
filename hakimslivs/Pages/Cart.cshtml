@@ -1,5 +1,7 @@
 ﻿@page
+@using hakimslivs.Models
 @model hakimslivs.Pages.IndexModel
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Varukorgen";
@@ -98,18 +100,28 @@
                         <span><strong>1234 kr</strong></span>
                     </li>
                 </ul>
-                <span class="text-center">
 
-                </span>
-                <button type="button" class="btn btn-primary btn-lg btn-block">
-                    Beställ
-                </button>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                        Beställ
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary btn-lg btn-block" disabled="true">
+                        Beställ
+                    </button>
+                    <p class="na text-center">Du måste vara inloggad för att beställa</p>
+                }
+                
+                
 
             </div>
             <div class="text-center">
                 <a asp-page="./Index">Tillbaka till Shoppingen</a>
             </div>
-
+            
         </div>
     </div>
 </div>

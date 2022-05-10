@@ -10,9 +10,9 @@
     <ul class="navbar-nav flex-grow-1">
         @foreach (var category in Model.Categories)
         {
-            <a asp-page="./Index"
+            <a class="side-menu" asp-page="./Index"
                 asp-route-currentCategory="@category.Name">
-                <i class="fa @category.Icon"></i>@category.Name
+                <i class="fa @category.Icon"></i><span class="side-menu-name">@category.Name</span>
             </a>        
         }
     </ul>

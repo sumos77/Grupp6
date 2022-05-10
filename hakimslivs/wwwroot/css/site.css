@@ -114,6 +114,32 @@ body {
     margin-right: 24px;
     text-align: center;
 }
+.navbar {
+    background-color: white;
+    /*min-width: 140px;*/
+}
+.side-menu {
+    padding: 12px;
+}
+@media screen and (max-width: 990px) {
+    .navbar {
+        padding-right: 0;
+        padding-left: 2px;
+    }
+    .side-menu {
+        padding: 6px;
+    }
+    .side-menu-name {
+        font-size: 14px;
+    }
+}
+@media screen and (max-width: 990px) {
+    .side-menu-name {
+        font-size: 12px;
+    }
+
+
+}
 
 @media screen and (max-width: 540px) {
     .category-name {

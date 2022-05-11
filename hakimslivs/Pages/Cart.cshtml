@@ -1,17 +1,18 @@
 ﻿@page
 @using hakimslivs.Models
-@model hakimslivs.Pages.IndexModel
+@model hakimslivs.Pages.CartModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Varukorgen";
 }
 
-
 <div class="row d-flex justify-content-center my-4">
     <div class="col-md-8">
         <div class="card mb-4">
             <div class="card-header py-3">
+                <asp:TextBox ID="localStorage" runat="server"></asp:TextBox>
+                <input id="btnLoad" type="button" value="Load" onclick ="LoadCart()" />
                 <h5 class="mb-0">@ViewData["Title"]</h5>
             </div>
             @foreach (var item in Model.Items)

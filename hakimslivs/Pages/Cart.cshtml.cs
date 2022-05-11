@@ -7,20 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using hakimslivs.Data;
 using hakimslivs.Models;
+using HtmlAgilityPack;
 
 namespace hakimslivs.Pages
 {
     public class CartModel : PageModel
     {
-        private readonly hakimslivs.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CartModel(hakimslivs.Data.ApplicationDbContext context)
+        public CartModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IList<Item> Items { get;set; }
-        public IList<Category> Categories { get;set; }
+        public IList<Item> Items { get; set; }
+        public IList<Category> Categories { get; set; }
         public string CurrentCategory { get; set; }
 
         public async Task OnGetAsync(string currentCategory)
@@ -34,6 +35,12 @@ namespace hakimslivs.Pages
                 Items = await _context.Items.Include(i => i.Category).ToListAsync();
             }
             Categories = await _context.Categories.ToListAsync();
+        }
+
+        //[System.Web.Services.WebMethod]
+        public ActionResult<string> GetCart(string value)
+        {
+            return value;
         }
     }
 }

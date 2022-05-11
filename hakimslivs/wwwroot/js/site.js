@@ -18,6 +18,7 @@ function registerHandlers() {
 
             writeLocalStorage();
             numberOfItemsInCart();
+            //updateLSElement();
         }
     }
 };
@@ -50,9 +51,54 @@ function numberOfItemsInCart() {
         shoppingCartElt.style.color = "green";
     }
 }
+//function updateLSElement() {
+//    const data = localStorage.getItem("shopping-cart");
+//    const input = document.getElementById("localStorage");
+//    input.innerHTML = data;
+//}
+
+//<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+
+function LoadCart() {
+
+    var JsonLocalStorageObj = JSON.stringify(localStorage);
+    //var test = ["test1", "test2", "test3"];
+
+    $.ajax({
+        url: "/CartController/GetCart",
+        type: "POST",
+        data: { JsonLocalStorageObj: JsonLocalStorageObj },
+        success: function (result) {
+            alert(result);
+        }
+    });
+
+    //const data = localStorage.getItem("shopping-cart");
+
+    //$.ajax({
+    //    type: "POST",
+    //    url: "Cart",
+    //    data: data, //'{name: "' + $("#<%=localStorage.ClientID%>")[0].value + '" }',
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    success: OnSuccess,
+    //    failure: function(response) {
+    //        alert(response.d);
+    //    }
+    //});
+}
+
+//function OnSuccess(response) {
+//    alert(response.d);
+//}
+
+
+
+
 
 registerHandlers();
 numberOfItemsInCart();
+// updateLSElement();
 
 
 

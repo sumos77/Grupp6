@@ -4,10 +4,10 @@
 // Write your JavaScript code.
 
 
-let shoppingCart = new Map();
+let shoppingCart = readLocalStorage() ||  new Map();
 let shoppingCartElt = document.getElementsByClassName('bi-cart')[0];
 
-
+readLocalStorage()
 allAddButtons = document.getElementsByClassName('add-to-cart');
 
 function registerHandlers() {
@@ -26,10 +26,23 @@ function registerHandlers() {
             }
             console.log(productClicked + " was clicked");
             console.log(shoppingCart);
+
+            writeLocalStorage();
         }
     }
 };
 
+function writeLocalStorage(){
+    localStorage.setItem('shopping-cart', JSON.stringify(Object.fromEntries(shoppingCart)));
+}
+
+function readLocalStorage(){
+    let cartStorage = JSON.parse(localStorage.getItem('shopping-cart'));
+
+    if (cartStorage != null){
+        return new Map(Object.entries(cartStorage));
+    };
+}
 
 
 registerHandlers();

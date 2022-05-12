@@ -24,17 +24,12 @@ window.addEventListener("load", () => {
 });
 
 
-var totalAmount = 0;
+//var totalAmount = 0;
+var totalPrice = 0;
 
 // Convert Json to html
 function createCardWithItems(jsonData)
 {
-    var totalPrice = 0;
-    
-    //var totalStock = 0;
-    //var totalItems = 0;
-    //var totalItemsInCart = 0;
-
     var json = JSON.parse(jsonData);
     var container = document.querySelector("#allItems");
     removeAllChildren(container);
@@ -64,35 +59,42 @@ function createCardWithItems(jsonData)
             quantity.value = json[i].Amount;
             quantity.max = json[i].Item.Stock;
 
-            var unitPrice = holder.querySelector("#unitPrice");
+            var unitPrice = holder.querySelector(".unitPrice");
             unitPrice.textContent = json[i].Item.Price + "kr/st";
-            var totalUnitPrice = holder.querySelector("#totalUnitPrice");
-            totalUnitPrice.textContent = (json[i].Amount) * (json[i].Item.Price) + "kr";
+            var totalUnitPrice = holder.querySelector(".totalUnitPrice");
+            totalUnitPrice.textContent = (json[i].Amount) * (json[i].Item.Price);
+            
+            var removeBtn = holder.querySelector(".remove-from-cart");
+            removeBtn.name = json[i].Item.ID;
+
             container.appendChild(holder);
-
-
-            var amount = json[i].Amount;
-            var price = json[i].Item.Price;
-            var stock = json[i].Item.Stock;
-            //var id = json[i].Item.ID;
-
-            totalPrice += price * amount;
-            totalAmount += amount;
-            //totalStock += stock;
-            //totalItems += 1;
-            //totalItemsInCart += 1;
         }
+    }
 
-        //setValue("totalStock", totalStock);
-        //setValue("totalItems", totalItems);
-        //setValue("totalItemsInCart", totalItemsInCart);
+    allRemoveBtns = container.getElementsByClassName('remove-from-cart');
+    function removeButtons() {
+        for (const removeBtn of allRemoveBtns) {
+            removeBtn.onclick = event => {
+                console.log("HALLÅ");
+                console.log(removeBtn.name);
+                let productClicked = removeBtn.name;
+                shoppingCart.delete(productClicked);
+                writeLocalStorage();
+                LoadCart();
+                numberOfItemsInCart();
+            }
+        };
     }
-    setValue("totalAmount", totalAmount);
-    setValue("totalPrice", totalPrice + "kr");
-    setValue("totalPrice2", totalPrice + "kr");
-    if (totalAmount === 0) {
-        disableBuyBtn();
+    removeButtons();
+
+    setValue("totalAmount", GetTotalAmount());
+    if (GetTotalAmount() === 0) {
+        document.querySelector(".bi-cart").style.color = null;
+        document.querySelector("#amount").textContent = "";
     }
+
+    setValue("totalPrice", GetTotalPrice());
+    setValue("totalPrice2", GetTotalPrice());
 }
 
 // check if element exists first
@@ -109,20 +111,71 @@ function removeAllChildren(parent) {
     }
 }
 
+function GetTotalAmount() {
+    let container = document.querySelector("#allItems");
+    let inputs = container.querySelectorAll("input");
+    let total = 0;
+    for (const input of inputs) {
+        total += parseInt(input.value);
+    };
+    return total;
+}
+
+function GetTotalPrice() {
+    let container = document.querySelector("#allItems");
+    let inputs = container.querySelectorAll(".totalUnitPrice");
+
+    let total = 0;
+    for (const input of inputs) {
+        total += parseInt(input.textContent);
+    };
+    return total;
+}
+
+
 function EmptyCart() {
     localStorage.clear();
-    totalAmount = 0;
-    document.querySelector("#amount").textContent = "";
-    document.querySelector(".bi-cart").style.color = null;
     LoadCart();
 }
 
-function disableBuyBtn() {
-    if (location.pathname === "/Cart") {
-        var buyBtn = document.querySelector(".btnBuy");
-        if (totalAmount === 0) {
-            buyBtn.disabled = true;
-        }
+//function disableBuyBtn() {
+//    if (location.pathname === "/Cart") {
+//        var buyBtn = document.querySelector(".btnBuy");
+//        if (GetTotalAmount() === 0) {
+//            buyBtn.disabled = true;
+//        }
+//    }
+//}
+
+
+// these are repeats from site.js :((
+function writeLocalStorage() {
+    localStorage.setItem('shopping-cart', JSON.stringify(Object.fromEntries(shoppingCart)));
+}
+
+function readLocalStorage() {
+    let cartStorage = JSON.parse(localStorage.getItem('shopping-cart'));
+
+    if (cartStorage != null) {
+        return new Map(Object.entries(cartStorage));
+    };
+}
+function numberOfItemsInCart() {
+    let total = 0;
+
+    var mapIter = shoppingCart.values();
+    shoppingCart.forEach(value => {
+        total += mapIter.next().value;
+    });
+    let number = document.getElementById("amount");
+    if (total !== 0) {
+        number.textContent = total + " ";
+        amount.style.color = "green";
+    }
+
+    if (shoppingCart.size > 0) {
+        shoppingCartElt.style.color = "green";
     }
 }
 
+//removeItemHandlers();

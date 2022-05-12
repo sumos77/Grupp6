@@ -33,6 +33,7 @@ function readLocalStorage() {
         return new Map(Object.entries(cartStorage));
     };
 }
+
 function numberOfItemsInCart() {
     let total = 0;
 

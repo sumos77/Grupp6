@@ -23,10 +23,6 @@ window.addEventListener("load", () => {
     LoadCart();
 });
 
-
-//var totalAmount = 0;
-var totalPrice = 0;
-
 // Convert Json to html
 function createCardWithItems(jsonData)
 {
@@ -75,8 +71,6 @@ function createCardWithItems(jsonData)
     function removeButtons() {
         for (const removeBtn of allRemoveBtns) {
             removeBtn.onclick = event => {
-                console.log("HALLÅ");
-                console.log(removeBtn.name);
                 let productClicked = removeBtn.name;
                 shoppingCart.delete(productClicked);
                 writeLocalStorage();
@@ -91,12 +85,12 @@ function createCardWithItems(jsonData)
     if (GetTotalAmount() === 0) {
         document.querySelector(".bi-cart").style.color = null;
         document.querySelector("#amount").textContent = "";
+        document.querySelector(".btnBuy").disabled = true;
     }
 
     setValue("totalPrice", GetTotalPrice());
     setValue("totalPrice2", GetTotalPrice());
 }
-
 // check if element exists first
 function setValue(id, value) {
     var element = document.getElementById(id);
@@ -132,27 +126,15 @@ function GetTotalPrice() {
     return total;
 }
 
-
 function EmptyCart() {
     localStorage.clear();
     LoadCart();
 }
 
-//function disableBuyBtn() {
-//    if (location.pathname === "/Cart") {
-//        var buyBtn = document.querySelector(".btnBuy");
-//        if (GetTotalAmount() === 0) {
-//            buyBtn.disabled = true;
-//        }
-//    }
-//}
-
-
 // these are repeats from site.js :((
 function writeLocalStorage() {
     localStorage.setItem('shopping-cart', JSON.stringify(Object.fromEntries(shoppingCart)));
 }
-
 function readLocalStorage() {
     let cartStorage = JSON.parse(localStorage.getItem('shopping-cart'));
 
@@ -177,5 +159,3 @@ function numberOfItemsInCart() {
         shoppingCartElt.style.color = "green";
     }
 }
-
-//removeItemHandlers();

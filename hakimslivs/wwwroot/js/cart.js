@@ -23,14 +23,17 @@ window.addEventListener("load", () => {
     LoadCart();
 });
 
+
+var totalAmount = 0;
+
 // Convert Json to html
 function createCardWithItems(jsonData)
 {
     var totalPrice = 0;
-    var totalAmount = 0;
-    var totalStock = 0;
-    var totalItems = 0;
-    var totalItemsInCart = 0;
+    
+    //var totalStock = 0;
+    //var totalItems = 0;
+    //var totalItemsInCart = 0;
 
     var json = JSON.parse(jsonData);
     var container = document.querySelector("#allItems");
@@ -75,17 +78,20 @@ function createCardWithItems(jsonData)
 
             totalPrice += price * amount;
             totalAmount += amount;
-            totalStock += stock;
-            totalItems += 1;
-            totalItemsInCart += 1;
+            //totalStock += stock;
+            //totalItems += 1;
+            //totalItemsInCart += 1;
         }
 
-        setValue("totalPrice", totalPrice + "kr");
-        setValue("totalPrice2", totalPrice + "kr");
-        setValue("totalAmount", totalAmount);
-        setValue("totalStock", totalStock);
-        setValue("totalItems", totalItems);
-        setValue("totalItemsInCart", totalItemsInCart);
+        //setValue("totalStock", totalStock);
+        //setValue("totalItems", totalItems);
+        //setValue("totalItemsInCart", totalItemsInCart);
+    }
+    setValue("totalAmount", totalAmount);
+    setValue("totalPrice", totalPrice + "kr");
+    setValue("totalPrice2", totalPrice + "kr");
+    if (totalAmount === 0) {
+        disableBuyBtn();
     }
 }
 
@@ -102,9 +108,21 @@ function removeAllChildren(parent) {
         parent.removeChild(parent.firstChild);
     }
 }
+
 function EmptyCart() {
     localStorage.clear();
+    totalAmount = 0;
+    document.querySelector("#amount").textContent = "";
+    document.querySelector(".bi-cart").style.color = null;
     LoadCart();
 }
 
+function disableBuyBtn() {
+    if (location.pathname === "/Cart") {
+        var buyBtn = document.querySelector(".btnBuy");
+        if (totalAmount === 0) {
+            buyBtn.disabled = true;
+        }
+    }
+}
 

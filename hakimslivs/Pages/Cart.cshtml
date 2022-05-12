@@ -14,6 +14,7 @@
                 <div class="cart-btns-header">
                     <h5 class="mb-0">@ViewData["Title"] </h5>
                     <div class="cart-btns">
+                        <button id="btnLoad" class="btn" alt="Uppdatera Varukorgen" onclick ="LoadCart()"><i class="fa fa-solid fa-arrows-rotate"></i></button>
                         <button id="btnEmpty" class="btn" alt="Töm Varukorgen" onclick ="EmptyCart()"><i class="fa fa-trash"></i></i></button>
                     </div>
                 </div>
@@ -49,17 +50,15 @@
                         <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                             <!-- Quantity -->
                         <div class="d-flex mb-4" style="max-width: 300px">
-                                <button class="btn btn-primary px-3 me-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                <button class="minus btn btn-primary px-3 me-2">
                                     <i class="fas fa-minus"></i>
                                 </button>
 
                                 <div class="form-outline">
-                                    <input id="form1" readonly min="1" name="quantity" value="1" type="number" class="form-control" />
+                                    <input readonly min="1" name="quantity" value="1" type="number" class="form1 form-control" />
                                 </div>
 
-                                <button class="btn btn-primary px-3 ms-2"
-                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                <button class="plus btn btn-primary px-3 ms-2">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>

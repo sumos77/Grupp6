@@ -51,9 +51,12 @@ function createCardWithItems(jsonData)
             var description = holder.querySelector("#description");
             description.textContent = json[i].Item.Description;
 
-            var quantity = holder.querySelector("#form1");
+            var quantity = holder.querySelector(".form1");
             quantity.value = json[i].Amount;
             quantity.max = json[i].Item.Stock;
+            quantity.classList.add(json[i].Item.ID);
+            holder.querySelector(".minus").name = json[i].Item.ID;;
+            holder.querySelector(".plus").name = json[i].Item.ID;;
 
             var unitPrice = holder.querySelector(".unitPrice");
             unitPrice.textContent = json[i].Item.Price + "kr/st";
@@ -67,7 +70,7 @@ function createCardWithItems(jsonData)
         }
     }
 
-    allRemoveBtns = container.getElementsByClassName('remove-from-cart');
+    var allRemoveBtns = container.getElementsByClassName('remove-from-cart');
     function removeButtons() {
         for (const removeBtn of allRemoveBtns) {
             removeBtn.onclick = event => {
@@ -80,6 +83,44 @@ function createCardWithItems(jsonData)
         };
     }
     removeButtons();
+
+    var allMinusBtn = container.getElementsByClassName('minus');
+    function minusButtons() {
+        for (const minus of allMinusBtn) {
+            minus.onclick = event => {
+                var input = container.getElementsByClassName(minus.name)[0];
+
+                if (input.value > 1) {
+                    input.value -= 1;
+                }
+                shoppingCart.set((minus.name), parseInt(input.value));
+                writeLocalStorage();
+                LoadCart();
+                numberOfItemsInCart();
+            }
+        };
+    }
+    minusButtons();
+
+    var allPlusBtn = container.getElementsByClassName('plus');
+    function plusButtons() {
+        for (const plus of allPlusBtn) {
+            plus.onclick = event => {
+                var input = container.getElementsByClassName(plus.name)[0];
+                var current = parseInt(input.value);
+                if (current < input.max) {
+                    input.value = current + 1;
+                }
+
+                shoppingCart.set((plus.name), parseInt(input.value));
+                writeLocalStorage();
+                LoadCart();
+                numberOfItemsInCart();
+            }
+        };
+    }
+    plusButtons();
+
 
     setValue("totalAmount", GetTotalAmount());
     if (GetTotalAmount() === 0) {

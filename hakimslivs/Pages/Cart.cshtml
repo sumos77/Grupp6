@@ -103,13 +103,13 @@
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                    <a asp-page="/Checkout/Index" type="button" class="btn btn-primary btn-lg btn-block">
                         Beställ
-                    </button>
+                    </a>
                 }
                 else
                 {
-                    <button type="button" class="btn btn-primary btn-lg btn-block" disabled="true">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" disabled="disabled" >
                         Beställ
                     </button>
                     <p class="na text-center">Du måste vara inloggad för att beställa</p>

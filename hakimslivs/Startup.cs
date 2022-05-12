@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Globalization;
-using System.IO;
 
 namespace hakimslivs
 {
@@ -41,7 +40,7 @@ namespace hakimslivs
                   opt.SupportedUICultures = cultures;
               });
             var connString = GetSqlConnectionString("defaultConnection");
-            File.WriteAllText("log.txt", connString);
+
             if (String.IsNullOrEmpty(connString))
             {
                 _ = services.AddDbContext<ApplicationDbContext>(options =>

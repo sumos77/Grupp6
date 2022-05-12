@@ -18,7 +18,6 @@ function registerHandlers() {
 
             writeLocalStorage();
             numberOfItemsInCart();
-            //updateLSElement();
         }
     }
 };
@@ -51,14 +50,6 @@ function numberOfItemsInCart() {
         shoppingCartElt.style.color = "green";
     }
 }
-//function updateLSElement() {
-//    const data = localStorage.getItem("shopping-cart");
-//    const input = document.getElementById("localStorage");
-//    input.innerHTML = data;
-//}
-
-//<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 
 registerHandlers();
 numberOfItemsInCart();
-// updateLSElement();

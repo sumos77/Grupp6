@@ -13,14 +13,6 @@ using Newtonsoft.Json.Linq;
 
 namespace hakimslivs.Controllers
 {
-    
-    // Flytta den här klassen till /Models senare
-    internal class CartItems
-    {
-        public Item Item { get; set; }
-        public int Amount { get; set; }
-    }
-
     [Route("[controller]")]
     [ApiController]
     public class CartreadController : Controller
@@ -28,7 +20,6 @@ namespace hakimslivs.Controllers
         ApplicationDbContext context;
         public CartreadController(ApplicationDbContext context)
         {
-            // Inject database context
             this.context = context;
         }
 
@@ -104,10 +95,5 @@ namespace hakimslivs.Controllers
             items = items.OrderBy(item => item.Item.Product).ToList();
             return items;
         }
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
     }
 }

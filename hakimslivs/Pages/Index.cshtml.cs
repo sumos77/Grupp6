@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using hakimslivs.Data;
 using hakimslivs.Models;
-using HtmlAgilityPack;
 
 namespace hakimslivs.Pages
 {

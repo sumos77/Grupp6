@@ -35,50 +35,58 @@ function createCardWithItems(jsonData)
     var json = JSON.parse(jsonData);
     var container = document.querySelector("#allItems");
     removeAllChildren(container);
-    
-    for (var i = 0; i < json.length; i++) {
 
-        var template = document.querySelector("template");
-        var holder = template.content.firstElementChild.cloneNode(true);
-
-        var img = holder.querySelector("#imageURL");
-        img.src = json[i].Item.ImageURL;
-        img.alt = json[i].Item.Product;
-
-        var product = holder.querySelector("#product");
-        product.textContent = json[i].Item.Product;
-        var description = holder.querySelector("#description");
-        description.textContent = json[i].Item.Description;
-
-        var quantity = holder.querySelector("#form1");
-        quantity.value = json[i].Amount;
-        quantity.max = json[i].Item.Stock;
-
-        var unitPrice = holder.querySelector("#unitPrice");
-        unitPrice.textContent = json[i].Item.Price + "kr/st";
-        var totalUnitPrice = holder.querySelector("#totalUnitPrice");
-        totalUnitPrice.textContent = (json[i].Amount) * (json[i].Item.Price) + "kr";
-        container.appendChild(holder);
-
-
-        var amount = json[i].Amount;
-        var price = json[i].Item.Price;
-        var stock = json[i].Item.Stock;
-        //var id = json[i].Item.ID;
-
-        totalPrice += price * amount;
-        totalAmount += amount;
-        totalStock += stock;
-        totalItems += 1;
-        totalItemsInCart += 1;
+    if (json.length === 0) {
+        let empty = document.createElement("h3");
+        empty.textContent = "Din varukorg är tom!";
+        empty.className = "text-center";
+        container.appendChild(empty);
     }
+    else {
+        for (var i = 0; i < json.length; i++) {
 
-    setValue("totalPrice", totalPrice + "kr");
-    setValue("totalPrice2", totalPrice + "kr");
-    setValue("totalAmount", totalAmount);
-    setValue("totalStock", totalStock);
-    setValue("totalItems", totalItems);
-    setValue("totalItemsInCart", totalItemsInCart);
+            var template = document.querySelector("template");
+            var holder = template.content.firstElementChild.cloneNode(true);
+
+            var img = holder.querySelector("#imageURL");
+            img.src = json[i].Item.ImageURL;
+            img.alt = json[i].Item.Product;
+
+            var product = holder.querySelector("#product");
+            product.textContent = json[i].Item.Product;
+            var description = holder.querySelector("#description");
+            description.textContent = json[i].Item.Description;
+
+            var quantity = holder.querySelector("#form1");
+            quantity.value = json[i].Amount;
+            quantity.max = json[i].Item.Stock;
+
+            var unitPrice = holder.querySelector("#unitPrice");
+            unitPrice.textContent = json[i].Item.Price + "kr/st";
+            var totalUnitPrice = holder.querySelector("#totalUnitPrice");
+            totalUnitPrice.textContent = (json[i].Amount) * (json[i].Item.Price) + "kr";
+            container.appendChild(holder);
+
+
+            var amount = json[i].Amount;
+            var price = json[i].Item.Price;
+            var stock = json[i].Item.Stock;
+            //var id = json[i].Item.ID;
+
+            totalPrice += price * amount;
+            totalAmount += amount;
+            totalStock += stock;
+            totalItems += 1;
+            totalItemsInCart += 1;
+        }
+
+        setValue("totalPrice", totalPrice + "kr");
+        setValue("totalPrice2", totalPrice + "kr");
+        setValue("totalAmount", totalAmount);
+        setValue("totalStock", totalStock);
+        setValue("totalItems", totalItems);
+        setValue("totalItemsInCart", totalItemsInCart);
+    }
 }
 
 // check if element exists first
@@ -93,6 +101,10 @@ function removeAllChildren(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+}
+function EmptyCart() {
+    localStorage.clear();
+    LoadCart();
 }
 
 

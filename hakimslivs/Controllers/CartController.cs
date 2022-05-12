@@ -32,7 +32,7 @@ namespace hakimslivs.Controllers
             this.context = context;
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("/GetCartItems/{json?}")]
         public object GetCartItems([FromBody] object jObject)
         {
@@ -48,7 +48,7 @@ namespace hakimslivs.Controllers
         }
 
         //TODO: Anropa denna från Javascript när betalningen är klar
-        [HttpPut]
+        [HttpPost]
         [Route("/GenerateOrder/{json?}")]
         public object GenerateOrder([FromBody] object jObject)
         {

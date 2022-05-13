@@ -16,7 +16,10 @@ function registerHandlers() {
                 if (!(currentQuantity >= stock)) {
                     shoppingCart.set(productClicked, currentQuantity + 1);
                 }
-                
+                else {
+                    addButton.textContent = "Slut"
+                    addButton.disabled = true;
+                }
             }
             else {
                 shoppingCart.set(productClicked, 1);

@@ -2,7 +2,7 @@
 @model hakimslivs.Pages.Checkout.IndexModel
 @{
 }
-
+<script src="~/js/checkout.js" asp-append-version="true"></script>
 
 <h1>Utcheckning</h1>
 <table class="table table-striped">
@@ -38,7 +38,7 @@
     <tr>
         <td>
             <strong>Totalsumma:</strong>
-            1234 kr 
+            <span id="totalSum">kr</span>
         </td>
     </tr>
     

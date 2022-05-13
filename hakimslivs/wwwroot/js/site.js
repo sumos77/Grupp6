@@ -1,4 +1,4 @@
-﻿let shoppingCart = readLocalStorage() ||  new Map();
+﻿let shoppingCart = readLocalStorage() || new Map();
 let shoppingCartElt = document.getElementsByClassName('bi-cart')[0];
 
 readLocalStorage();
@@ -9,7 +9,7 @@ function registerHandlers() {
         addButton.onclick = event => {
             let productClicked = addButton.name;
             if (shoppingCart.has(productClicked)) {
-               let currentQuantity = shoppingCart.get(productClicked);
+                let currentQuantity = shoppingCart.get(productClicked);
                 shoppingCart.set(productClicked, currentQuantity + 1);
             }
             else {
@@ -22,17 +22,18 @@ function registerHandlers() {
     }
 };
 
-function writeLocalStorage(){
+function writeLocalStorage() {
     localStorage.setItem('shopping-cart', JSON.stringify(Object.fromEntries(shoppingCart)));
 }
 
-function readLocalStorage(){
+function readLocalStorage() {
     let cartStorage = JSON.parse(localStorage.getItem('shopping-cart'));
 
-    if (cartStorage != null){
+    if (cartStorage != null) {
         return new Map(Object.entries(cartStorage));
     };
 }
+
 function numberOfItemsInCart() {
     let total = 0;
 
@@ -53,8 +54,3 @@ function numberOfItemsInCart() {
 
 registerHandlers();
 numberOfItemsInCart();
-
-
-
-
-

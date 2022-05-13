@@ -8,9 +8,15 @@ function registerHandlers() {
     for (const addButton of allAddButtons) {
         addButton.onclick = event => {
             let productClicked = addButton.name;
+            console.log(addButton.className);
+            var stock = (addButton.title);
+            console.log(stock);
             if (shoppingCart.has(productClicked)) {
                 let currentQuantity = shoppingCart.get(productClicked);
-                shoppingCart.set(productClicked, currentQuantity + 1);
+                if (!(currentQuantity >= stock)) {
+                    shoppingCart.set(productClicked, currentQuantity + 1);
+                }
+                
             }
             else {
                 shoppingCart.set(productClicked, 1);

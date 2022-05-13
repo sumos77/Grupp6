@@ -7,7 +7,6 @@
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             GetTotalSum(result);
-            console.log(result);
         },
         error: function (xhr, status, error) {
             console.log('Error : ' + xhr.responseText);
@@ -28,4 +27,21 @@ function GetTotalSum(jsonData) {
         total += (json[i].Amount) * (json[i].Item.Price)
     }
     container.textContent = total + "kr";
+}
+
+function PlaceOrder() {
+    var JsonLocalStorageObj = JSON.stringify(localStorage);
+    $.ajax({
+        url: "/GetCartItems",
+        type: "POST",
+        data: JsonLocalStorageObj,
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            console.log(result);
+            //GetTotalSum(result);
+        },
+        error: function (xhr, status, error) {
+            console.log('Error : ' + xhr.responseText);
+        }
+    });
 }

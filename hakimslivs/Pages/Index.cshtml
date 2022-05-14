@@ -15,7 +15,7 @@
                 <div class="card">
                     <img class="card-img" src="@item.ImageURL" alt="Product image">
                     <div class="card-body">
-                        <h4 class="card-title">@item.Product</h4>
+                        <h4 class="card-title product-search-name">@item.Product</h4>
                         <div class="box">
                             @if (item.Category == null)
                             {
@@ -23,7 +23,7 @@
                             }
                             else
                             {
-                                <a asp-page="./Index" asp-route-currentCategory="@item.Category.Name" class="card-text"> <i class="fa @item.Category.Icon"></i>@item.Category.Name</a>
+                                <a asp-page="./Index" asp-route-currentCategory="@item.Category.Name" class="card-text category-link"> <i class="fa @item.Category.Icon"></i>@item.Category.Name</a>
                             }
                             @if (String.IsNullOrEmpty(item.Description))
                             {
